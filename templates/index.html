@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LifeDrop — Blood Donor Management</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="navbar-brand">
+    <span class="logo">🩸</span>
+    <span class="brand-name">LifeDrop</span>
+  </div>
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="register">Register</button>
+    <button class="tab-btn" data-tab="search">Search</button>
+    <button class="tab-btn" data-tab="request">Request</button>
+    <button class="tab-btn" data-tab="dashboard">Dashboard</button>
+  </nav>
+</header>
+
+<main class="container">
+
+  <!-- REGISTER TAB -->
+  <section id="register" class="tab-panel active">
+    <div class="card form-card">
+      <h2>Register as a Donor</h2>
+      <p class="subtitle">Join our community of life-savers.</p>
+      <div id="register-message" class="form-message"></div>
+      <form id="register-form">
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div class="form-field">
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age" min="18" max="65" required>
+          </div>
+          <div class="form-field">
+            <label for="blood_group">Blood Group</label>
+            <select id="blood_group" name="blood_group" required>
+              <option value="">Select group</option>
+              <option>A+</option><option>A-</option>
+              <option>B+</option><option>B-</option>
+              <option>O+</option><option>O-</option>
+              <option>AB+</option><option>AB-</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="9876543210" required>
+          </div>
+          <div class="form-field">
+            <label for="location">Location / City</label>
+            <input type="text" id="location" name="location" required>
+          </div>
+          <div class="form-field">
+            <label for="last_donation_date">Last Donation Date</label>
+            <input type="date" id="last_donation_date" name="last_donation_date">
+          </div>
+          <div class="form-field">
+            <label for="availability">Availability</label>
+            <select id="availability" name="availability">
+              <option value="Available">Available</option>
+              <option value="Unavailable">Unavailable</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary">Register Donor</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- SEARCH TAB -->
+  <section id="search" class="tab-panel">
+    <div class="card">
+      <h2>Find a Donor</h2>
+      <p class="subtitle">Search by blood group and location.</p>
+      <div class="search-bar">
+        <select id="filter-blood-group">
+          <option value="">All Blood Groups</option>
+          <option>A+</option><option>A-</option>
+          <option>B+</option><option>B-</option>
+          <option>O+</option><option>O-</option>
+          <option>AB+</option><option>AB-</option>
+        </select>
+        <input type="text" id="filter-location" placeholder="Filter by city...">
+      </div>
+      <div id="donor-results" class="donor-grid"></div>
+      <p id="no-results" class="empty-state" style="display:none;">No donors match your search.</p>
+    </div>
+  </section>
+
+  <!-- REQUEST TAB -->
+  <section id="request" class="tab-panel">
+    <div class="card form-card">
+      <h2>Request Blood</h2>
+      <p class="subtitle">Submit a request and we'll help connect you with donors.</p>
+      <div id="request-message" class="form-message"></div>
+      <form id="request-form">
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="patient_name">Patient Name</label>
+            <input type="text" id="patient_name" name="patient_name" required>
+          </div>
+          <div class="form-field">
+            <label for="req_blood_group">Required Blood Group</label>
+            <select id="req_blood_group" name="blood_group" required>
+              <option value="">Select group</option>
+              <option>A+</option><option>A-</option>
+              <option>B+</option><option>B-</option>
+              <option>O+</option><option>O-</option>
+              <option>AB+</option><option>AB-</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="hospital">Hospital Name</label>
+            <input type="text" id="hospital" name="hospital" required>
+          </div>
+          <div class="form-field">
+            <label for="req_location">Location</label>
+            <input type="text" id="req_location" name="location" required>
+          </div>
+          <div class="form-field">
+            <label for="contact_number">Contact Number</label>
+            <input type="tel" id="contact_number" name="contact_number" required>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary">Submit Request</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- DASHBOARD TAB -->
+  <section id="dashboard" class="tab-panel">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-value" id="stat-total-donors">0</span>
+        <span class="stat-label">Total Donors</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="stat-available-donors">0</span>
+        <span class="stat-label">Available Donors</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="stat-pending-requests">0</span>
+        <span class="stat-label">Pending Requests</span>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Blood Requests</h2>
+      <div class="table-wrap">
+        <table id="requests-table">
+          <thead>
+            <tr>
+              <th>Patient</th>
+              <th>Blood Group</th>
+              <th>Hospital</th>
+              <th>Location</th>
+              <th>Contact</th>
+              <th>Submitted</th>
+            </tr>
+          </thead>
+          <tbody id="requests-tbody"></tbody>
+        </table>
+      </div>
+      <p id="no-requests" class="empty-state" style="display:none;">No requests yet.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>LifeDrop &mdash; Blood Donor Management MVP</p>
+</footer>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
